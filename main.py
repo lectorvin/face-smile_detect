@@ -11,7 +11,7 @@ width, height = 320, 240
 ser_y = 120
 ser_x = 1500
 v1_prev = 0
-v2_prev = 10
+v2_prev = 1500
 
 
 def start():
@@ -101,7 +101,8 @@ def move(ser, cent, center, lv=10, z=0):
 
 def main(cap, ser):
     center = (int(width/2), int(height/2))
-    cascade = cv.CascadeClassifier("cascades/haarcascade_frontalface_default.xml")
+    cascade = cv.CascadeClassifier(
+        "cascades/haarcascade_frontalface_default.xml")
     smile = cv.CascadeClassifier("cascades/haarcascade_smile.xml")
     logging.debug("Starting loop")
     if not(cap):
@@ -124,7 +125,7 @@ def main(cap, ser):
                                              minNeighbors=4,
                                              minSize=(40, 40),
                                              flags=cv.CASCADE_SCALE_IMAGE)
-            out = cv.cvtColor(gray, cv.COLOR_GRAY2BGR)
+            # out = cv.cvtColor(gray, cv.COLOR_GRAY2BGR)
             cent = ()
 
             smiles = smile.detectMultiScale(gray, scaleFactor=1.7,
@@ -134,8 +135,8 @@ def main(cap, ser):
 
             for x, y, w, h in rects:
                 cent = (int(x+w/2), int(y+h/2))
-                cv.rectangle(out, (x, y), (x+w, y+h), (0, 0, 255), 2)
-                cv.circle(out, cent, 3, (100, 50, 255))
+                cv.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
+                cv.circle(img, cent, 3, (100, 50, 255))
                 if len(smiles):
                     tz = 1
                 else:
@@ -143,9 +144,9 @@ def main(cap, ser):
                 move(ser, cent, center, lv=40, z=tz)
 
             for x, y, w, h in smiles:
-                cv.rectangle(out, (x, y), (x+w, y+h), (255, 0, 0), 1)
+                cv.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 1)
 
-            cv.imshow("face", out)
+            cv.imshow("face", img)
 
             if cv.waitKey(30) > 0:
                 ser.close()

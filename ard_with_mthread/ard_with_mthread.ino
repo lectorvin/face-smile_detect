@@ -8,24 +8,25 @@ int x, y, z;
 int tmp, tmp2;
 int vertical = 10;
 
-class SayHelloThread : public Thread {
+class SayHelloEvent : public EventHandler {
   public:
-    SayHelloThread();
+    SayHelloEvent();
   protected:
-    bool loop();  
+    bool condition();
+    bool on_event();  
 };
-SayHelloThread::SayHelloThread() {}
-bool SayHelloEvent::loop() {
+SayHelloEvent::SayHelloEvent() {}
+bool SayHelloEvent::condition() {
+  if (z==1) { return true; }
+  return false;
+}
+bool SayHelloEvent::on_event() {
   for(int i=1300;i<1720;i=i+20) {
     servo3.writeMicroseconds(i);
     delay(100);
   }
   servo3.writeMicroseconds(1500);
   delay(10); 
-  if (z==1)
-    return true;
-  else
-    return false;
 }
 
 
@@ -69,7 +70,9 @@ void setup() {
     servo2.write(vertical);
     delay(50);
     servo3.writeMicroseconds(1500);
-    main_thread_list->add_thread(new SayHelloThread);
-    main_thread_list->add_thread(new MyThread);
+    ThreadList tl = new ThreadList();
+    tl.add_thread(new SayHelloEvent);
+    tl.add_thread(new MyThread);
+    main_thread_list->add_thread(tl);
 }
 

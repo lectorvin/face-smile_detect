@@ -4,7 +4,7 @@ Servo servo2;
 Servo servo3;
 int x, y, z;
 int tmp, tmp2;
-int vertical = 10;
+int vertical = 120;
 
 void setup() {
     servo1.attach(12);
@@ -24,7 +24,7 @@ void setup() {
 }
 
 void sayHello() {
-  for(int i=1300;i<1720;i=i+20) {
+  for(int i=1300;i<1680;i=i+20) {
     servo3.writeMicroseconds(i);
     delay(10);
   }
