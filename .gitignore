@@ -1,0 +1,13 @@
+# Source #
+##########
+*.py[cod]
+__pycache__
+*.log
+
+# Python files #
+###############
+# Egg metadata
+*.egg-info
+# setup.py dist directory
+dist
+build
